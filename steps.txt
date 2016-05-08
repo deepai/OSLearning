@@ -1,0 +1,18 @@
+1) Create loader.s
+2) Compile with nasm
+   nasm -f elf32 loader.s
+3) Create the link.ld script
+4) Link the Kernel with the loader.
+   ld -T link.ld -melf_i386 loader.o -o kernel.elf
+5) Install the el-territo iso image to iso/boot/grub
+
+   mkdir -p iso/boot/grub              # create the folder structure
+   cp stage2_eltorito iso/boot/grub/   # copy the bootloader
+   cp kernel.elf iso/boot/             # copy the kernel
+
+6) Create menu.lst under iso/boot/grub.
+
+7) Use geniso.sh script to generate the iso image.
+
+8) Run in boch using bochs -f bochsrc.txt -q
+

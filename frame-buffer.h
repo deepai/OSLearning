@@ -24,4 +24,7 @@
  */
 void fb_write_cell(unsigned short i,char c,unsigned char fg,unsigned char bg);
 
+//This method is used to clear the screen.
+void clear_screen();
+
 #endif

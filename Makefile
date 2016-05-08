@@ -1,15 +1,25 @@
-OBJECTS = loader.o kmain.o frame-buffer.o io.o
+INC = -I include/
+
+DEPS = include/vga/*.h include/sys/*.h
+
+OBJECTS = files/sys/loader.o \
+	  files/kmain.o \
+	  files/vga/frame-buffer.o \
+	  files/sys/io.o
 CC = gcc
-CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
+CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector $(INC) \
           -std=gnu99 -ffreestanding -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
-LDFLAGS = -T link.ld -melf_i386
+
+LD_PATH = files/misc/link.ld
+
+LDFLAGS = -T $(LD_PATH) $(INC) -melf_i386
 AS = nasm
-ASFLAGS = -f elf32
+ASFLAGS = -f elf32 $(INC)
 
 all: kernel.elf
 
-kernel.elf: $(OBJECTS)
-	ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
+kernel.elf: $(OBJECTS) $(DEPS)
+	ld $(LDFLAGS) $(OBJECTS) $(INC) -o kernel.elf
 
 os.iso: kernel.elf
 	cp kernel.elf iso/boot/kernel.elf
@@ -32,4 +42,4 @@ run: os.iso
 %.o: %.s
 	$(AS) $(ASFLAGS) $< -o $@
 clean:
-	rm -rf *.o kernel.elf os.iso
+	rm -rf *.o kernel.elf os.iso files/sys/*.o files/*.o files/vga/*.o

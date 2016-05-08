@@ -1,5 +1,5 @@
-#include "frame-buffer.h"
-#include "io.h"
+#include <vga/frame-buffer.h>
+#include <sys/io.h>
 
 void advance_cursor();
 char *pointer_to_frame_buff = (char *)0x000B8000;

@@ -1,5 +1,5 @@
-#include "frame-buffer.h"
-#include "intro.h"
+#include <vga/frame-buffer.h>
+#include <misc/intro.h>
 
 void kmain()
 {

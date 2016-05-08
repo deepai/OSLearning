@@ -19,7 +19,7 @@ ASFLAGS = -f elf32 $(INC)
 all: kernel.elf
 
 kernel.elf: $(OBJECTS) $(DEPS)
-	ld $(LDFLAGS) $(OBJECTS) $(INC) -o kernel.elf
+	ld $(LDFLAGS) $(OBJECTS) $(INC) -o $@
 
 os.iso: kernel.elf
 	cp kernel.elf iso/boot/kernel.elf

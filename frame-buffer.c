@@ -1,11 +1,19 @@
 #include "frame-buffer.h"
 #include "io.h"
 
-
+void advance_cursor();
 char *pointer_to_frame_buff = (char *)0x000B8000;
 
 unsigned short *cursor = (unsigned short *)0x000B8000;
 unsigned int cursor_loc = 0;
+
+void fb_add_newline(unsigned short pos)
+{
+	unsigned short line_num = pos/80;
+	unsigned short new_pos = (line_num + 1) * 80 + 0;
+
+	cursor_loc = new_pos;	
+}
 
 void fb_write_cell(unsigned short pos,char c,unsigned char fg,unsigned char bg)
 {
@@ -77,7 +85,7 @@ void fb_scroll_down()
 void advance_cursor()
 {
 	cursor_loc++;
-	if(cursor_loc == (80 * 25))
+	if(cursor_loc >= (80 * 25))
 	{
 		cursor_loc = 79 * 25;
 		fb_scroll_up();
@@ -90,7 +98,12 @@ int write(const char *buf,int len)
 {
 	int count_char_written = 0;
 	for(int i=0;i<len;i++)
-	{
+	{	
+		if(buf[i] == '\n')
+		{
+			fb_add_newline(cursor_loc);
+			continue;
+		}
 		fb_write_cell(cursor_loc,buf[i],15,0);
 		advance_cursor();
 		count_char_written++;

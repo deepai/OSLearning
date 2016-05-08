@@ -26,13 +26,9 @@
 #define FB_HIGH_BYTE_COMMAND    14
 #define FB_LOW_BYTE_COMMAND     15
 
-/**
- * This method is used to write a character in the frame buffer at the location
- * i. We pass a character which we wish to write alongwith fg and bg.
- */
-void fb_write_cell(unsigned short i,char c,unsigned char fg,unsigned char bg);
-
 //This method is used to clear the screen.
 void clear_screen();
+
+int write(const char *buf,int len);
 
 #endif

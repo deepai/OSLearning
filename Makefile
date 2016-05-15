@@ -5,10 +5,12 @@ DEPS = include/vga/*.h include/sys/*.h
 OBJECTS = files/sys/loader.o \
 	  files/kmain.o \
 	  files/vga/frame-buffer.o \
-	  files/sys/io.o
+	  files/sys/io.o \
+	  files/sys/serial.o \
+	  files/lib/printd.o
 CC = gcc
-CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector $(INC) \
-          -std=gnu99 -ffreestanding -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector $(INC) \
+          -std=gnu99 -ffreestanding -c -Wall #-Wextra -c
 
 LD_PATH = files/misc/link.ld
 

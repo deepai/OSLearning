@@ -7,7 +7,8 @@ OBJECTS = files/sys/loader.o \
 	  files/vga/frame-buffer.o \
 	  files/sys/io.o \
 	  files/sys/serial.o \
-	  files/lib/printd.o
+	  files/lib/printd.o \
+	  files/lib/common.o
 CC = gcc
 CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector $(INC) \
           -std=gnu99 -ffreestanding -c -Wall #-Wextra -c

@@ -1,43 +1,111 @@
 #include <lib/printd.h>
-#include <sys/io.h>
+#include <sys/serial.h>
+#include <lib/common.h>
 
 #define true 1
 #define false 0
 
-char print_buffer[1000] = {0};
+#define MAX_BUFFER_LEN 1000
+
+char print_buffer[MAX_BUFFER_LEN + 1] = {0};
+int buffer_pos = 0;
+
+static void clear_buffer()
+{
+	for(int i=0;i<MAX_BUFFER_LEN;i++)
+		print_buffer[i] = 0;
+	buffer_pos = 0;
+}
+
+static void flush_buffer()
+{
+	while(buffer_pos < MAX_BUFFER_LEN)
+	{
+		write_serial(print_buffer[buffer_pos]);
+		buffer_pos++;
+	}
+	clear_buffer();
+}
 
 static void write_character(char c)
 {
-
+	if(buffer_pos == MAX_BUFFER_LEN)
+	{
+		flush_buffer();
+	}
+	print_buffer[buffer_pos++] = c; 
 }
 
-static void write_int(int i)
+static int write_int(int i)
 {
+	char number[10];
+	int pos = 0,count=0;
+	if(i < 0)
+	{
+		write_character('-');
+		count++;
+		i = -i;
+	}
+	if(i == 0)
+	{
+		write_character('0');
+		count++;
+		return count;
+	}
+	while(i != 0)
+	{
+		number[pos++] = (mod(i,10) + '0');
+		i = i/10;
+		count++;
+	}
 
+	for(;pos>=0;pos--)
+		write_character(number[pos++]);
+
+	return count;
 }
 
-static void write_unsigned(unsigned u)
+static int write_unsigned(unsigned u)
 {
+	char number[10];
+	int pos = 0,count=0;
 
+	if(u == 0)
+	{
+		write_character('0');
+		count++;
+		return count;
+	}
+	while(u != 0)
+	{
+		number[pos++] = (mod(u,10) + '0');
+		u = u/10;
+		count++;
+	}
+
+	for(;pos>=0;pos--)
+		write_character(number[pos++]);
+
+	return count;
 }
 
-static void write_float(float f)
+static int write_float(float f)
 {
-
+	return 0;
 }
 
-static void write_double(double d)
+static int write_double(double d)
 {
-
+	return 0;
 }
 
-static void write_long_long(long long l)
+static int write_long_long(long long l)
 {
-
+	return 0;
 }
-static void write_unsigned_long_long(unsigned long long llu)
+static int write_unsigned_long_long(unsigned long long llu)
 {
-
+	return 0;
 }
 
 static void error(char *string,int pos)
@@ -50,8 +118,7 @@ void print_d(char* format,...)
 	char *traverse; 
 	unsigned int u; 
 	int i;
-	char *s;
-	char c;
+	//char *s;
 	float f;
 	double d;
 	long long l;
@@ -170,6 +237,8 @@ void print_d(char* format,...)
 				break;
 		}
 	}
-
 	va_end(arg);
+
+	flush_buffer();
+	clear_buffer();
 }

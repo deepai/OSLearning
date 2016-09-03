@@ -2,17 +2,17 @@
 #include <sys/io.h>
 
 void advance_cursor();
-char *pointer_to_frame_buff = (char *)0x000B8000;
+static char *pointer_to_frame_buff = (char *)0x000B8000;
 
-unsigned short *cursor = (unsigned short *)0x000B8000;
-unsigned int cursor_loc = 0;
+static unsigned short *cursor = (unsigned short *)0x000B8000;
+static unsigned int cursor_loc = 0;
 
 void fb_add_newline(unsigned short pos)
 {
 	unsigned short line_num = pos/80;
 	unsigned short new_pos = (line_num + 1) * 80 + 0;
 
-	cursor_loc = new_pos;	
+	cursor_loc = new_pos;
 }
 
 void fb_write_cell(unsigned short pos,char c,unsigned char fg,unsigned char bg)
@@ -110,4 +110,3 @@ int write(const char *buf,int len)
 	}
 	return count_char_written;
 }
-	 

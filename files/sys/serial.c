@@ -1,8 +1,11 @@
 #include <sys/serial.h>
-#include <sys/serial.h>
 #include <sys/io.h>
+#include <misc/text.h>
+#include <vga/frame-buffer.h>
 
-void init_serial_port()
+static const int S_PORT = 0x3F8; /*Com1*/
+
+void init_serial()
 {
 	outb(S_PORT + 1, 0x00);    // Disable all interrupts
 	outb(S_PORT + 3, 0x80);    // Enable DLAB (set baud rate divisor)
@@ -11,22 +14,27 @@ void init_serial_port()
 	outb(S_PORT + 3, 0x03);    // 8 bits, no parity, one stop bit
 	outb(S_PORT + 2, 0xC7);    // Enable FIFO, clear them, with 14-byte threshold
 	outb(S_PORT + 4, 0x0B);    // IRQs enabled, RTS/DSR set
+
+	//write(SERIAL_SUCCESS,SERIAL_SUCCESS_SIZE*sizeof(char));
+
+	for(int i=0;i<SERIAL_SUCCESS_SIZE;i++)
+		write_serial(SERIAL_SUCCESS[i]);
 }
-int serial_received()
-{
-	return (inb(S_PORT + 5) & 1);
+
+int serial_received() {
+	return inb(S_PORT + 5) & 1;
 }
-char read_serial()
-{
+ 
+char read_serial() {
 	while (serial_received() == 0);
 	return inb(S_PORT);
 }
-int is_transmit_empty()
-{
-	return (inb(S_PORT + 5) & 0x20);
+
+int is_transmit_empty() {
+	return inb(S_PORT + 5) & 0x20;
 }
-void write_serial(char a)
-{
+
+void write_serial(char a) {
 	while (is_transmit_empty() == 0);
-	outb(S_PORT,a);
+		outb(S_PORT,a);
 }

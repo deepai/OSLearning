@@ -21,7 +21,7 @@ static void flush_buffer()
 {
 	while(buffer_pos < MAX_BUFFER_LEN)
 	{
-		write_serial(print_buffer[buffer_pos]);
+		//write_serial(print_buffer[buffer_pos]);
 		buffer_pos++;
 	}
 	clear_buffer();
@@ -89,16 +89,6 @@ static int write_unsigned(unsigned u)
 	return count;
 }
 
-static int write_float(float f)
-{
-	return 0;
-}
-
-static int write_double(double d)
-{
-	return 0;
-}
-
 static int write_long_long(long long l)
 {
 	return 0;
@@ -159,79 +149,76 @@ void print_d(char* format,...)
 			case 'u': u = va_arg(arg,unsigned int);
 				write_unsigned(u);
 				break;
-			case 'f': f = (float)va_arg(arg,double);
-				write_float(f);
-				break;
-			case 'l':
-				if((*(traverse + 1) != '\0') && (*(traverse + 1) == 'l'))
-				{
-					if((*(traverse + 2) != '\0') && (*(traverse + 2) == 'l' || *(traverse + 2) =='u'))
-						is_64bit = true;
-				}
-				else if((*(traverse + 1) != '\0') && (*(traverse + 1) == 'f'))
-				{
-					is_double = true;
-					d = va_arg(arg,double);
-					write_double(d);
-					traverse++;
-					string_pos++;
-					break;
-				}
-				if(!is_64bit && !is_double)
-				{
-					if(*(traverse + 1) != '\0')
-					{
-						if(*(traverse + 1) == 'd')
-						{
-							i = va_arg(arg,int);
-							write_int(i);
-							traverse++;
-							string_pos++;
-						}
-						else if(*(traverse + 1)  == 'u')
-						{
-							u = va_arg(arg,unsigned int);
-							write_int(i);
-							traverse++;
-							string_pos++;
-						}
-						else
-						{
-							error(format,string_pos);
-							error_string = true;
-							break;
-						}
-					}
-					else
-					{
-						i = va_arg(arg,int);
-						write_int(i);
-						break;
-					}
-				}
-				else if(is_64bit && !is_double)
-				{
-					if(*(traverse + 2) == 'd')
-					{
-						l = va_arg(arg,long long int);
-						write_long_long(l);
-						traverse += 2;
-						string_pos += 2;
-						break;
-					}
-					else
-						ull = va_arg(arg,unsigned long long int);
-						write_unsigned_long_long(ull);
-						traverse += 2;
-						string_pos += 2;
-						break;
-				}
-				else
-				{
-					error(format,string_pos);
-					break;
-				}
-				break;
+			// case 'l':
+			// 	if((*(traverse + 1) != '\0') && (*(traverse + 1) == 'l'))
+			// 	{
+			// 		if((*(traverse + 2) != '\0') && (*(traverse + 2) == 'l' || *(traverse + 2) =='u'))
+			// 			is_64bit = true;
+			// 	}
+			// 	else if((*(traverse + 1) != '\0') && (*(traverse + 1) == 'f'))
+			// 	{
+			// 		is_double = true;
+			// 		d = va_arg(arg,double);
+			// 		write_double(d);
+			// 		traverse++;
+			// 		string_pos++;
+			// 		break;
+			// 	}
+			// 	if(!is_64bit && !is_double)
+			// 	{
+			// 		if(*(traverse + 1) != '\0')
+			// 		{
+			// 			if(*(traverse + 1) == 'd')
+			// 			{
+			// 				i = va_arg(arg,int);
+			// 				write_int(i);
+			// 				traverse++;
+			// 				string_pos++;
+			// 			}
+			// 			else if(*(traverse + 1)  == 'u')
+			// 			{
+			// 				u = va_arg(arg,unsigned int);
+			// 				write_int(i);
+			// 				traverse++;
+			// 				string_pos++;
+			// 			}
+			// 			else
+			// 			{
+			// 				error(format,string_pos);
+			// 				error_string = true;
+			// 				break;
+			// 			}
+			// 		}
+			// 		else
+			// 		{
+			// 			i = va_arg(arg,int);
+			// 			write_int(i);
+			// 			break;
+			// 		}
+			// 	}
+			// 	else if(is_64bit && !is_double)
+			// 	{
+			// 		if(*(traverse + 2) == 'd')
+			// 		{
+			// 			l = va_arg(arg,long long int);
+			// 			write_long_long(l);
+			// 			traverse += 2;
+			// 			string_pos += 2;
+			// 			break;
+			// 		}
+			// 		else
+			// 			ull = va_arg(arg,unsigned long long int);
+			// 			write_unsigned_long_long(ull);
+			// 			traverse += 2;
+			// 			string_pos += 2;
+			// 			break;
+			// 	}
+			// 	else
+			// 	{
+			// 		error(format,string_pos);
+			// 		break;
+			// 	}
+			// 	break;
 			default:
 				error(format,string_pos);
 				break;

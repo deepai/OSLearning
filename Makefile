@@ -1,14 +1,18 @@
 INC = -I include/
 
-DEPS = include/vga/*.h include/sys/*.h
+DEPS = include/vga/*.h include/sys/*.h include/misc/*.h
 
 OBJECTS = files/sys/loader.o \
 	  files/kmain.o \
 	  files/vga/frame-buffer.o \
 	  files/sys/io.o \
 	  files/sys/serial.o \
+	  files/sys/gdt_flush.o \
+	  files/sys/gdt.o \
 	  files/lib/printd.o \
-	  files/lib/common.o
+	  files/lib/common.o \
+	  files/misc/text.o
+
 CC = gcc
 CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector $(INC) \
           -std=gnu99 -ffreestanding -c -Wall #-Wextra -c
@@ -21,7 +25,7 @@ ASFLAGS = -f elf32 $(INC)
 
 all: kernel.elf
 
-kernel.elf: $(OBJECTS) $(DEPS)
+kernel.elf: $(OBJECTS)
 	ld $(LDFLAGS) $(OBJECTS) $(INC) -o $@
 
 os.iso: kernel.elf
@@ -39,10 +43,10 @@ os.iso: kernel.elf
 run: os.iso
 	bochs -f bochsrc.txt -q
 
-%.o: %.c
+%.o: %.c $(DEPS)
 	$(CC) $(CFLAGS)  $< -o $@
 
-%.o: %.s
+%.o: %.s $(DEPS)
 	$(AS) $(ASFLAGS) $< -o $@
 clean:
-	rm -rf *.o kernel.elf os.iso files/sys/*.o files/*.o files/vga/*.o
+	rm -rf *.o kernel.elf os.iso $(OBJECTS)

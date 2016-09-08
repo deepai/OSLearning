@@ -97,6 +97,23 @@ void advance_cursor()
 int write(const char *buf,int len)
 {
 	int count_char_written = 0;
+	if(len < 0)
+	{
+		int i = 0;
+		while(buf[i] != '\0')
+		{
+			if(buf[i] == '\n')
+			{
+				fb_add_newline(cursor_loc);
+				continue;
+			}
+			fb_write_cell(cursor_loc,buf[i],15,0);
+			advance_cursor();
+			count_char_written++;
+		}
+		return count_char_written;
+	}
+
 	for(int i=0;i<len;i++)
 	{	
 		if(buf[i] == '\n')

@@ -14,6 +14,7 @@ interrupt_handler_%1:
 	push	dword %1                    ; push the interrupt number
 	jmp     common_interrupt_handler    ; jump to the common handler
 	sti
+	ret
 %endmacro
 
 %macro error_code_interrupt_handler 1
@@ -23,16 +24,18 @@ interrupt_handler_%1:
 	push	dword %1                    ; push the interrupt number
 	jmp	common_interrupt_handler    ; jump to the common handler
 	sti
+	ret
 %endmacro
 
 %macro no_error_code_irq_handler 1
-global interrupt_handler_%1
-interrupt_handler_%1:
+global irq_handler_%1
+irq_handler_%1:
 	cli
 	push	dword 0                     ; push 0 as error code
 	push	dword %1                    ; push the interrupt number
 	jmp     common_irq_handler    ; jump to the common handler
 	sti
+	ret
 %endmacro
 
 extern fault_handler
@@ -64,7 +67,7 @@ common_interrupt_handler:
 
 ; This is a stub that we have created for IRQ based ISRs. This calls
 ; '_irq_handler' in our C code. We need to create this in an 'irq.c'
-irq_common_stub:
+common_irq_handler:
     pusha
     push ds
     push es

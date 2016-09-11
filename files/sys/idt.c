@@ -7,8 +7,6 @@
 struct idt_entry idt[256];
 struct idt_ptr idtp;
 
-extern 
-
 /* Use this function to set an entry in the IDT. Alot simpler
 *  than twiddling with the GDT ;) */
 void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags)
@@ -31,19 +29,21 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
 void idt_install()
 {
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
-    idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
-    idtp.base = &idt;
+	idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
+	idtp.base = &idt;
 
-    long long default_value = 0;
+	long long default_value = 0;
 
-    memset(&idt,0,sizeof(struct idt_entry)*256);
-    /* Add any new ISRs to the IDT here using idt_set_gate */
+	memset(&idt,0,sizeof(struct idt_entry)*256);
+	/* Add any new ISRs to the IDT here using idt_set_gate */
 
-    /* Points the processor's internal register to the new IDT */
-    idt_load();
+	isrs_install();
 
-    for(int i=0; IDT_MESSAGE[i]!='\0'; i++)
-    	write_serial(IDT_MESSAGE[i]);
+	/* Points the processor's internal register to the new IDT */
+	idt_load();
+
+	for(int i=0; IDT_MESSAGE[i]!='\0'; i++)
+		write_serial(IDT_MESSAGE[i]);
 }
 
 void isrs_install()
@@ -88,7 +88,7 @@ void isrs_install()
 void init_idt_isr()
 {
 	idt_install();
-	isrs_install();
+	//isrs_install();
 }
 
 /* This is a simple string array. It contains the message that

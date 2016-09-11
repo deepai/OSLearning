@@ -79,5 +79,6 @@ extern void interrupt_handler_31();
 
 void init_idt_isr();
 
+extern void enable_interrupts();
 
 #endif

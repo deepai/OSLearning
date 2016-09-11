@@ -11,6 +11,7 @@ OBJECTS = files/sys/loader.o \
 	  files/sys/gdt.o \
 	  files/sys/idt.o \
 	  files/sys/idt_flush.o \
+	  files/sys/irq.o \
 	  files/lib/printd.o \
 	  files/lib/common.o \
 	  files/misc/text.o

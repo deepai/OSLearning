@@ -1,7 +1,6 @@
 #include <sys/serial.h>
 #include <sys/io.h>
 #include <misc/text.h>
-#include <vga/frame-buffer.h>
 
 static const int S_PORT = 0x3F8; /*Com1*/
 
@@ -16,9 +15,7 @@ void init_serial()
 	outb(S_PORT + 4, 0x0B);    // IRQs enabled, RTS/DSR set
 
 	//write(SERIAL_SUCCESS,SERIAL_SUCCESS_SIZE*sizeof(char));
-
-	for(int i=0;i<SERIAL_SUCCESS_SIZE;i++)
-		write_serial(SERIAL_SUCCESS[i]);
+	print_k("%s\n",SERIAL_SUCCESS);
 }
 
 int serial_received() {

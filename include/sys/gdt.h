@@ -21,6 +21,8 @@ struct gdt_ptr
 	unsigned int base;
 } __attribute__((packed));
 
+extern void gdt_flush();
+
 /* Our GDT, with 3 entries, and finally our special GDT pointer */
 struct gdt_entry gdt[3];
 struct gdt_ptr gp;

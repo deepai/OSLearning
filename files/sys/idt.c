@@ -1,6 +1,7 @@
 #include <sys/idt.h>
 #include <vga/frame-buffer.h>
-#include <sys/serial.h>
+#include <lib/printk.h>
+#include <lib/printd.h>
 #include <misc/text.h>
 #include <lib/common.h>
 
@@ -32,9 +33,7 @@ void idt_install()
 	idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
 	idtp.base = &idt;
 
-	long long default_value = 0;
-
-	memset(&idt,0,sizeof(struct idt_entry)*256);
+	memset((unsigned char *)&idt,0,sizeof(struct idt_entry)*256);
 	/* Add any new ISRs to the IDT here using idt_set_gate */
 
 	isrs_install();
@@ -42,8 +41,7 @@ void idt_install()
 	/* Points the processor's internal register to the new IDT */
 	idt_load();
 
-	for(int i=0; IDT_MESSAGE[i]!='\0'; i++)
-		write_serial(IDT_MESSAGE[i]);
+	print_k("%s\n",IDT_MESSAGE);
 }
 
 void isrs_install()
@@ -81,8 +79,7 @@ void isrs_install()
 	idt_set_gate(30, (unsigned)interrupt_handler_30, 0x08, 0x8E);
 	idt_set_gate(31, (unsigned)interrupt_handler_31, 0x08, 0x8E);
 
-	for(int i=0; IDT_MESSAGE[i] != '\0'; i++)
-		write_serial(ISR_MESSAGE[i]);
+	print_k("%s\n",ISR_MESSAGE);
 }
 
 void init_idt_isr()
@@ -138,10 +135,9 @@ void fault_handler(struct regs *r)
        // write(exception_messages[r->int_no],-1);
         //write(" Exception. System Halted!\n",-1);
         char *exception_message = exception_messages[r->int_no];
-        int len = strlen(exception_message);
-        
-        for(int i=0;i<len;i++)
-        	write_serial(exception_message[i]);
+
+        print_k("The following Exception Occured: %s and its ID is %d\n",exception_message,r->int_no);
+        print_d("The following Exception Occured: %s and its ID is %d\n",exception_message,r->int_no);
 
     }
 }

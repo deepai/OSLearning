@@ -16,7 +16,7 @@ void kmain()
 
 	timer_install();
 
-	//asm volatile ("int $0x3");
+	asm volatile ("int $0x3");
 
 	//irq_install();
 	//enable_interrupts();

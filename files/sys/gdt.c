@@ -1,5 +1,5 @@
 #include <sys/gdt.h>
-#include <sys/serial.h>
+#include <lib/printk.h>
 #include <misc/text.h>
 
 
@@ -50,6 +50,5 @@ void gdt_install()
     /* Flush out the old GDT and install the new changes! */
     gdt_flush();
 
-    for(int i=0;i<GDT_MESSAGE_SIZE;i++)
-        write_serial(GDT_MESSAGE[i]);
+    print_k("%s\n",GDT_MESSAGE);
 }

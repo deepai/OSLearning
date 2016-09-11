@@ -3,6 +3,6 @@
 
 #include <stdarg.h>
 
-void print_d(char *format, ...);
+int print_d(char *format, ...);
 
 #endif

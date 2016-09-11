@@ -10,6 +10,8 @@
 void kmain()
 {
 	clear_screen();
+	print_d("%s\n",INTRODUCTION);
+
 	init_serial();
 	gdt_install();
 	init_idt_isr();
@@ -26,5 +28,4 @@ void kmain()
 	// int val1 = 5;
 	// int val2 = 6 - 4 - 2;
 	// val1 = val1/val2;
-	print_d("Hello, Its Working %d %s\n",-12,"I wonder how?");
 }

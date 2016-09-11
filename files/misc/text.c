@@ -1,6 +1,6 @@
 #include <misc/text.h>
 
-char *INTRODUCTION = "Welcome User! to Debarshi's OS.\nThis OS is still under Development.It has the following features...";
+char *INTRODUCTION = "Welcome User! to Debarshi's hobby OS.\nThis OS is still under heavy Development...\n________________________________________________________________________________\n";
 char *SERIAL_SUCCESS = "Serial Data Successfully configured...";
 char *GDT_MESSAGE = "GDT Loaded Successfully...";
 char *IDT_MESSAGE = "IDT_Loaded Successfully...";

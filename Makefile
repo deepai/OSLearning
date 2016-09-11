@@ -12,9 +12,11 @@ OBJECTS = files/sys/loader.o \
 	  files/sys/idt.o \
 	  files/sys/idt_flush.o \
 	  files/sys/irq.o \
+	  files/sys/timer.o \
 	  files/lib/printd.o \
 	  files/lib/common.o \
-	  files/misc/text.o
+	  files/lib/print_k.o \
+	  files/misc/text.o \
 
 CC = gcc
 CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector $(INC) \

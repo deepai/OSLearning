@@ -4,8 +4,13 @@
 #include <sys/timer.h>
 #include <sys/descriptor_table.h>
 #include <sys/kb.h>
+#include <sys/multiboot.h>
+#include <lib/error.h>
+#include <sys/elf.h>
 
-void kmain()
+elf_t kernel_elf;
+
+void kmain(multiboot_t *mboot_ptr)
 {
 	clear_screen();
 	print_d("%s\n",INTRODUCTION);
@@ -18,6 +23,9 @@ void kmain()
 	asm volatile("sti");
 	//timer_install();
 	register_keyboard();
+
+	kernel_elf = elf_from_multiboot (mboot_ptr);
+
 	//void unregister_keyboard()
 
 	
@@ -28,7 +36,7 @@ void kmain()
 	//init_serial_port();
 
 	// //print_d("%d",5);
-	// int val1 = 5;
-	// int val2 = 6 - 4 - 2;
-	// val1 = val1/val2;
+	int val1 = 5;
+	int val2 = 6 - 4 - 2;
+	val1 = val1/val2;
 }

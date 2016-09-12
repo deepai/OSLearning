@@ -81,7 +81,8 @@ void irq_handler(struct regs *r)
     /* If the IDT entry that was invoked was greater than 40
     *  (meaning IRQ8 - 15), then we need to send an EOI to
     *  the slave controller */
-    print_k("Interrupt Generated = %d \n",r->int_no);
+    if(r->int_no != 32)
+        print_k("Interrupt Generated = %d \n",r->int_no);
 
 	if (r->int_no >= 40)
 	{

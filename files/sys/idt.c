@@ -5,6 +5,7 @@
 #include <lib/printd.h>
 #include <misc/text.h>
 #include <lib/common.h>
+#include <lib/error.h>
 
 struct idt_entry idt[256];
 struct idt_ptr idtp;
@@ -140,8 +141,7 @@ void fault_handler(struct regs *r)
         char *exception_message = exception_messages[r->int_no];
 
         print_k("The following Exception Occured: %s and its ID is %d\n",exception_message,r->int_no);
-        print_d("The following Exception Occured: %s and its ID is %d\n",exception_message,r->int_no);
-
-        while(1);
+        //
+        panic(exception_message);
     }
 }

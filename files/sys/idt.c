@@ -142,5 +142,6 @@ void fault_handler(struct regs *r)
         print_k("The following Exception Occured: %s and its ID is %d\n",exception_message,r->int_no);
         print_d("The following Exception Occured: %s and its ID is %d\n",exception_message,r->int_no);
 
+        while(1);
     }
 }

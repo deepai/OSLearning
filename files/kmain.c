@@ -3,7 +3,7 @@
 #include <lib/printd.h>
 #include <sys/timer.h>
 #include <sys/descriptor_table.h>
-#include <vga/frame-buffer.h>
+#include <sys/kb.h>
 
 void kmain()
 {
@@ -16,8 +16,11 @@ void kmain()
 	//asm volatile("int $0x3"); 
 	//asm volatile("int $0x4");
 	asm volatile("sti");
-	timer_install();
+	//timer_install();
+	register_keyboard();
+	//void unregister_keyboard()
 
+	
 //	asm volatile ("int $0x3");
 
 	//

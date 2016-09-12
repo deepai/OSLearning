@@ -29,7 +29,7 @@ void timer_handler(struct regs *r)
 void timer_install()
 {
     /* Installs 'timer_handler' to IRQ0 */
-    irq_install_handler(0, &timer_handler);
+    irq_install_handler(IRQ0, &timer_handler);
     set_timer_phase(freq);
 
     print_d("Timer Installed...\n");

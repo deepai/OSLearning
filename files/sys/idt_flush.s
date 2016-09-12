@@ -27,12 +27,12 @@ interrupt_handler_%1:
 	ret
 %endmacro
 
-%macro no_error_code_irq_handler 1
+%macro no_error_code_irq_handler 2
 global irq_handler_%1
 irq_handler_%1:
 	cli
 	push	dword 0                     ; push 0 as error code
-	push	dword %1                    ; push the interrupt number
+	push	dword %2                    ; push the interrupt number
 	jmp     common_irq_handler    ; jump to the common handler
 	sti
 	ret
@@ -124,22 +124,22 @@ no_error_code_interrupt_handler 29       ; create handler for interrupt 29
 no_error_code_interrupt_handler 30       ; create handler for interrupt 30
 no_error_code_interrupt_handler 31       ; create handler for interrupt 31
 
-no_error_code_irq_handler 0
-no_error_code_irq_handler 1
-no_error_code_irq_handler 2
-no_error_code_irq_handler 3
-no_error_code_irq_handler 4
-no_error_code_irq_handler 5
-no_error_code_irq_handler 6
-no_error_code_irq_handler 7
-no_error_code_irq_handler 8
-no_error_code_irq_handler 9
-no_error_code_irq_handler 10
-no_error_code_irq_handler 11
-no_error_code_irq_handler 12
-no_error_code_irq_handler 13
-no_error_code_irq_handler 14
-no_error_code_irq_handler 15
+no_error_code_irq_handler 0,32
+no_error_code_irq_handler 1,33
+no_error_code_irq_handler 2,34
+no_error_code_irq_handler 3,35
+no_error_code_irq_handler 4,36
+no_error_code_irq_handler 5,37
+no_error_code_irq_handler 6,38
+no_error_code_irq_handler 7,39
+no_error_code_irq_handler 8,40
+no_error_code_irq_handler 9,41
+no_error_code_irq_handler 10,42
+no_error_code_irq_handler 11,43
+no_error_code_irq_handler 12,44
+no_error_code_irq_handler 13,45
+no_error_code_irq_handler 14,46
+no_error_code_irq_handler 15,47
 
 
 

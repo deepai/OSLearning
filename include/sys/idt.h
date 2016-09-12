@@ -33,8 +33,6 @@ struct regs
 *  for which the 'presence' bit is cleared (0) will generate an
 *  "Unhandled Interrupt" exception */
 
-extern void idt_load();
-
 void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 
 void idt_install();
@@ -76,6 +74,8 @@ extern void interrupt_handler_28();
 extern void interrupt_handler_29();
 extern void interrupt_handler_30();
 extern void interrupt_handler_31();
+
+extern void idt_load();
 
 void init_idt_isr();
 

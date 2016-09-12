@@ -2,6 +2,9 @@
 #include <sys/io.h>
 
 void advance_cursor();
+void fb_scroll_up();
+void fb_move_cursor(unsigned short pos);
+
 static char *pointer_to_frame_buff = (char *)0x000B8000;
 
 static unsigned short *cursor = (unsigned short *)0x000B8000;
@@ -10,15 +13,19 @@ static unsigned int cursor_loc = 0;
 void fb_add_newline(unsigned short pos)
 {
 	unsigned short line_num = pos/80;
-	unsigned short new_pos = (line_num + 1) * 80 + 0;
 
-	cursor_loc = new_pos;
+	if(line_num == 79)
+	{
+		fb_scroll_up();
+		return;
+	}
+
+	fb_move_cursor((line_num + 1)*80 + 0);
 }
 
 void fb_write_cell(unsigned short pos,char c,unsigned char fg,unsigned char bg)
 {
 	unsigned short value = 0;
-	
 	unsigned short attrib = ((bg & 0x0F) << 4 | (fg & 0x0F));
 	attrib <<= 8;
 
@@ -32,17 +39,20 @@ void fb_write_cell(unsigned short pos,char c,unsigned char fg,unsigned char bg)
 
 void fb_move_cursor(unsigned short pos)
 {
+	cursor_loc = pos;
 	outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
 	outb(FB_DATA_PORT, ((pos>>8)&0x00FF));
 
 	outb(FB_COMMAND_PORT,FB_LOW_BYTE_COMMAND);
-	outb(FB_DATA_PORT, pos&0x00FF);	
+	outb(FB_DATA_PORT, pos&0x00FF);
 }
 
 void clear_row(int row)
 {
 	for(int j=0;j<80;j++)
 		fb_write_cell(row*80+j,' ',15,0);
+
+	fb_move_cursor(row*80 + 1);
 }
 
 void clear_screen()

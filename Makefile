@@ -13,6 +13,7 @@ OBJECTS = files/sys/loader.o \
 	  files/sys/idt_flush.o \
 	  files/sys/irq.o \
 	  files/sys/timer.o \
+	  files/sys/descriptor_table.o \
 	  files/lib/printd.o \
 	  files/lib/common.o \
 	  files/lib/print_k.o \

@@ -1,11 +1,9 @@
-#include <vga/frame-buffer.h>
 #include <misc/text.h>
 #include <sys/serial.h>
-#include <sys/gdt.h>
 #include <lib/printd.h>
-#include <sys/idt.h>
-#include <sys/irq.h>
 #include <sys/timer.h>
+#include <sys/descriptor_table.h>
+#include <vga/frame-buffer.h>
 
 void kmain()
 {
@@ -13,14 +11,16 @@ void kmain()
 	print_d("%s\n",INTRODUCTION);
 
 	init_serial();
-	gdt_install();
-	init_idt_isr();
+	init_descriptor_tables();
 
+	//asm volatile("int $0x3"); 
+	//asm volatile("int $0x4");
+	asm volatile("sti");
 	timer_install();
 
-	asm volatile ("int $0x3");
+//	asm volatile ("int $0x3");
 
-	//irq_install();
+	//
 	//enable_interrupts();
 	//init_serial_port();
 

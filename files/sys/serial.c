@@ -1,6 +1,7 @@
 #include <sys/serial.h>
 #include <sys/io.h>
 #include <misc/text.h>
+#include <lib/printk.h>
 
 static const int S_PORT = 0x3F8; /*Com1*/
 

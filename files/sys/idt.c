@@ -1,5 +1,6 @@
 #include <sys/idt.h>
-#include <vga/frame-buffer.h>
+#include <sys/irq.h>
+
 #include <lib/printk.h>
 #include <lib/printd.h>
 #include <misc/text.h>
@@ -31,16 +32,18 @@ void idt_install()
 {
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
 	idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
-	idtp.base = &idt;
+	idtp.base =  (unsigned int)&idt;
 
 	memset((unsigned char *)&idt,0,sizeof(struct idt_entry)*256);
 	/* Add any new ISRs to the IDT here using idt_set_gate */
 
+	irq_remap();
+
 	isrs_install();
+	irq_install();
 
-	/* Points the processor's internal register to the new IDT */
 	idt_load();
-
+	/* Points the processor's internal register to the new IDT */
 	print_k("%s\n",IDT_MESSAGE);
 }
 
@@ -94,27 +97,27 @@ void init_idt_isr()
 *  exception_message[interrupt_number] */
 char *exception_messages[] =
 {
-    "Division By Zero\n",
-    "Debug\n",
-    "Non Maskable Interrupt\n",
-    "Breakpoint Exception\n",
-    "Into Detected Overflow Exception\n",
-    "Out of Bounds Exception\n",
-    "Invalid Opcode Exception\n",
-    "No Coprocessor Exception\n",
-    "Double Fault Exception\n",
-    "Coprocessor Segment Overrun Exception\n",
-    "Bad TSS Exception\n",
-    "Segment Not Present Exception\n",
-    "Stack Fault Exception\n",
-    "General Protection Fault Exception\n",
-    "Page Fault Exception\n",
-    "Unknown Interrupt Exception\n",
-    "Coprocessor Fault Exception\n",
-    "Alignment Check Exception (486+)\n",
-    "Machine Check Exception (Pentium/586+)\n",
-    "Reserved","Reserved","Reserved","Reserved","Reserved\n",
-    "Reserved","Reserved","Reserved","Reserved","Reserved\n",
+    "Division By Zero",
+    "Debug",
+    "Non Maskable Interrupt",
+    "Breakpoint Exception",
+    "Into Detected Overflow Exception",
+    "Out of Bounds Exception",
+    "Invalid Opcode Exception",
+    "No Coprocessor Exception",
+    "Double Fault Exception",
+    "Coprocessor Segment Overrun Exception",
+    "Bad TSS Exception",
+    "Segment Not Present Exception",
+    "Stack Fault Exception",
+    "General Protection Fault Exception",
+    "Page Fault Exception",
+    "Unknown Interrupt Exception",
+    "Coprocessor Fault Exception",
+    "Alignment Check Exception (486+)",
+    "Machine Check Exception (Pentium/586+)",
+    "Reserved","Reserved","Reserved","Reserved","Reserved",
+    "Reserved","Reserved","Reserved","Reserved","Reserved",
     "Reserved","Reserved","Reserved"
 };
 

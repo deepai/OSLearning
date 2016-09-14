@@ -1,6 +1,7 @@
 #include <sys/io.h>
 #include <sys/irq.h>
 #include <lib/printd.h>
+#include <lib/printk.h>
 
 static int caps_lock_status = 0; //by default off
 
@@ -124,9 +125,11 @@ void keyboard_handler(struct regs *r)
 void register_keyboard()
 {
 	irq_install_handler(IRQ1,&keyboard_handler);
+	print_k("Installed Keyboard...\n");
 }
 
 void unregister_keyboard()
 {
 	irq_uninstall_handler(IRQ1);
+	print_k("Uninstalled Keyboard...\n");
 }

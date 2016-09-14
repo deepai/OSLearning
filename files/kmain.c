@@ -7,6 +7,7 @@
 #include <sys/multiboot.h>
 #include <lib/error.h>
 #include <sys/elf.h>
+#include <vga/frame-buffer.h>
 
 elf_t kernel_elf;
 
@@ -26,7 +27,7 @@ void kmain(multiboot_t *mboot_ptr)
 
 	kernel_elf = elf_from_multiboot (mboot_ptr);
 
-	//void unregister_keyboard()
+	// unregister_keyboard();
 
 	
 //	asm volatile ("int $0x3");
@@ -35,8 +36,7 @@ void kmain(multiboot_t *mboot_ptr)
 	//enable_interrupts();
 	//init_serial_port();
 
-	// //print_d("%d",5);
-	int val1 = 5;
-	int val2 = 6 - 4 - 2;
-	val1 = val1/val2;
+	// int val1 = 5;
+	// int val2 = 6 - 4 - 2;
+	// val1 = val1/val2;
 }

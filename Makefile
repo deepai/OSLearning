@@ -15,9 +15,11 @@ OBJECTS = files/sys/loader.o \
 	  files/sys/timer.o \
 	  files/sys/descriptor_table.o \
 	  files/sys/kb.o \
+	  files/sys/elf.o \
 	  files/lib/printd.o \
 	  files/lib/common.o \
 	  files/lib/print_k.o \
+	  files/lib/error.o \
 	  files/misc/text.o \
 
 CC = gcc
